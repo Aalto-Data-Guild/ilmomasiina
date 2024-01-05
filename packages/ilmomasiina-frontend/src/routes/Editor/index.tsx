@@ -2,6 +2,7 @@ import React, { useEffect, useRef } from 'react';
 
 import { Formik, FormikHelpers } from 'formik';
 import { Spinner } from 'react-bootstrap';
+import { useTranslation } from 'react-i18next';
 import { shallowEqual } from 'react-redux';
 import { Link, useHistory, useParams } from 'react-router-dom';
 import { toast } from 'react-toastify';
@@ -34,6 +35,7 @@ const Editor = () => {
   } = useTypedSelector((state) => state.editor, shallowEqual);
   const initialFormData = useTypedSelector(selectInitialFormData);
   const history = useHistory();
+  const { t } = useTranslation();
 
   const urlEventId = useParams<MatchParams>().id;
   const urlIsNew = urlEventId === 'new';
@@ -73,15 +75,11 @@ const Editor = () => {
       if (isNew) {
         saved = await dispatch(publishNewEvent(modifiedEvent));
         history.push(appPaths.adminEditEvent(saved.id));
-        toast.success('The event was successfully created!', {
-          autoClose: 2000,
-        });
+        toast.success(t('editor.status.createSuccess'), { autoClose: 2000 });
       } else {
         saved = await dispatch(publishEventUpdate(event!.id, modifiedEvent, moveToQueue));
         if (saved) {
-          toast.success('Your changes were successfully recorded!', {
-            autoClose: 2000,
-          });
+          toast.success(t('editor.status.saveSuccess'), { autoClose: 2000 });
         }
       }
       // Update questions/quotas to get IDs from the server
@@ -92,10 +90,7 @@ const Editor = () => {
         setFieldValue('questions', newFormData.questions);
       }
     } catch (error) {
-      toast.error(
-        'Something went wrong - updating the event failed.',
-        { autoClose: 2000 },
-      );
+      toast.error(t('editor.status.saveFailed'), { autoClose: 2000 });
     }
     setSubmitting(false);
   }
@@ -103,9 +98,9 @@ const Editor = () => {
   if (loadError) {
     return (
       <div className="ilmo--loading-container">
-        <h1>Hups, jotain meni pieleen</h1>
-        <p>{`Event with ID "${urlEventId}" was not found`}</p>
-        <Link to={appPaths.adminEventsList}>Return to the event list</Link>
+        <h1>{t('errors.title')}</h1>
+        <p>{t('editor.eventNotFound', { eventId: urlEventId })}</p>
+        <Link to={appPaths.adminEventsList}>{t('errors.returnToEvents')}</Link>
       </div>
     );
   }
@@ -113,8 +108,12 @@ const Editor = () => {
   if (!urlIsNew && !event) {
     return (
       <>
-        <h1>Edit event</h1>
-        <Link to={appPaths.adminEventsList}>&#8592; Back</Link>
+        <h1>{t('editor.title.edit')}</h1>
+        <Link to={appPaths.adminEventsList}>
+          &#8592;
+          {' '}
+          {t('editor.action.goBack')}
+        </Link>
         <div className="ilmo--loading-container">
           <Spinner animation="border" />
         </div>

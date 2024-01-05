@@ -1,6 +1,7 @@
 import React, { useCallback } from 'react';
 
 import { useFormikContext } from 'formik';
+import { Trans, useTranslation } from 'react-i18next';
 import { toast } from 'react-toastify';
 
 import ConfirmButton from '../../../components/ConfirmButton';
@@ -15,16 +16,17 @@ const DeleteSignup = () => {
   const deleteSignup = useDeleteSignup();
   const navigate = useNavigate();
   const paths = usePaths();
+  const { t } = useTranslation();
 
   const { isSubmitting, setSubmitting } = useFormikContext();
 
   const doDelete = useCallback(async () => {
-    const progressToast = toast.loading('Registration will be cancelled');
+    const progressToast = toast.loading(t('editSignup.status.delete'));
     try {
       setSubmitting(true);
       await deleteSignup();
       toast.update(progressToast, {
-        render: 'Your registration was successfully cancelled.',
+        render: t('editSignup.status.deleteSuccess'),
         type: toast.TYPE.SUCCESS,
         closeButton: true,
         closeOnClick: true,
@@ -34,7 +36,7 @@ const DeleteSignup = () => {
     } catch (error) {
       setSubmitting(false);
       toast.update(progressToast, {
-        render: 'The cancellation failed.',
+        render: t('editSignup.status.deleteFailed'),
         type: toast.TYPE.ERROR,
         autoClose: 5000,
         closeButton: true,
@@ -42,25 +44,25 @@ const DeleteSignup = () => {
         isLoading: false,
       });
     }
-  }, [deleteSignup, event, navigate, paths, setSubmitting]);
+  }, [deleteSignup, event, navigate, paths, setSubmitting, t]);
 
   return (
     <div className="ilmo--delete-container">
-      <h2>Cancel your registration</h2>
+      <h2>{t('editSignup.delete.action')}</h2>
       <p>
-        Are you sure you want to cancel your registration for the event
-        {' '}
-        <strong>
-          {event!.title}
-        </strong>
-        ?
+        <Trans t={t} i18nKey="editSignup.delete.info1">
+          {'Are you sure you want to delete your sign up to '}
+          <strong>
+            {{ event: event!.title }}
+          </strong>
+          ?
+        </Trans>
       </p>
       <p>
-        If you cancel your registration, you will lose your place in the queue. If
-        you change your mind, you can always sign up for the event again
-        later, but then you will be added to the end of the queue.
+        {/* eslint-disable-next-line max-len */}
+        {t('editSignup.delete.info2')}
         {' '}
-        <strong>This action cannot be undone.</strong>
+        <strong>{t('editSignup.delete.info3')}</strong>
       </p>
       <ConfirmButton
         type="button"
@@ -68,9 +70,9 @@ const DeleteSignup = () => {
         onClick={doDelete}
         variant="danger"
         confirmDelay={DELETE_CONFIRM_MS}
-        confirmLabel="Press again to confirm&hellip;"
+        confirmLabel={t('editSignup.delete.action.confirm')}
       >
-        Remove your registration
+        {t('editSignup.delete.action')}
       </ConfirmButton>
     </div>
   );

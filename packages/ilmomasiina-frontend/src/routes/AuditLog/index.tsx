@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
 
 import { Spinner } from 'react-bootstrap';
+import { useTranslation } from 'react-i18next';
 import { shallowEqual } from 'react-redux';
 import { Link } from 'react-router-dom';
 
@@ -18,6 +19,7 @@ import './AuditLog.scss';
 const AuditLog = () => {
   const dispatch = useTypedDispatch();
   const { auditLog, auditLogLoadError } = useTypedSelector((state) => state.auditLog, shallowEqual);
+  const { t } = useTranslation();
 
   useEffect(() => {
     dispatch(getAuditLogs({
@@ -30,33 +32,37 @@ const AuditLog = () => {
 
   return (
     <>
-      <Link to={appPaths.adminEventsList}>&#8592; Back</Link>
-      <h1>Activity log</h1>
+      <Link to={appPaths.adminEventsList}>
+        &#8592;
+        {' '}
+        {t('auditLog.returnToEvents')}
+      </Link>
+      <h1>{t('auditLog.title')}</h1>
       <AuditLogPagination />
       <table className="table audit-log--table">
         <thead>
           <tr>
             <th>
-            Time
+              {t('auditLog.column.time')}
             </th>
             <th>
-              User
+              {t('auditLog.column.user')}
               <nav className="audit-log--filter">
                 <AuditLogFilter name="user" />
               </nav>
             </th>
             <th>
-              IP-address
+              {t('auditLog.column.ipAddress')}
               <nav className="audit-log--filter">
                 <AuditLogFilter name="ip" />
               </nav>
             </th>
             <th>
-              Activity
+              {t('auditLog.column.action')}
               <nav className="audit-log--filter">
                 <AuditLogActionFilter />
-                <AuditLogFilter name="event" placeHolder="Event&hellip;" />
-                <AuditLogFilter name="signup" placeHolder="Sign-up&hellip;" />
+                <AuditLogFilter name="event" placeholder={t('auditLog.filter.event')} />
+                <AuditLogFilter name="signup" placeholder={t('auditLog.filter.signup')} />
               </nav>
             </th>
           </tr>
@@ -65,7 +71,7 @@ const AuditLog = () => {
           {auditLogLoadError && (
             <tr>
               <td colSpan={4}>
-                Failed to download logs
+                {t('auditLog.loadFailed')}
               </td>
             </tr>
           )}

@@ -2,6 +2,7 @@ import React from 'react';
 
 import { useFormikContext } from 'formik';
 import { Form } from 'react-bootstrap';
+import { useTranslation } from 'react-i18next';
 
 import { FieldRow } from '@tietokilta/ilmomasiina-components';
 import { EditorEvent } from '../../../modules/editor/types';
@@ -10,46 +11,46 @@ import Quotas from './Quotas';
 
 const QuotasTab = () => {
   const { values: { useOpenQuota } } = useFormikContext<EditorEvent>();
+  const { t } = useTranslation();
   return (
     <div>
       <FieldRow
         name="registrationStartDate"
         as={DateTimePicker}
-        label="Registration begins"
+        label={t('editor.quotas.registrationStartDate')}
         required
       />
       <FieldRow
         name="registrationEndDate"
         as={DateTimePicker}
-        label="Registration ends"
+        label={t('editor.quotas.registrationEndDate')}
         required
       />
       <FieldRow
         name="signupsPublic"
-        label="Publicity"
+        label={t('editor.quotas.signupsPublic')}
         as={Form.Check}
         type="checkbox"
         checkAlign
-        checkLabel="Registrations are public"
+        checkLabel={t('editor.quotas.signupsPublic.check')}
       />
       <hr />
       <Quotas />
       <FieldRow
         name="useOpenQuota"
-        label="Open quota"
+        label={t('editor.quotas.openQuota')}
         as={Form.Check}
         type="checkbox"
         checkAlign
-        checkLabel="In addition, use a common quota"
+        checkLabel={t('editor.quotas.openQuota.check')}
         help={
-          'The first applicants who do not fit into the quota of their choice' +
-          ' will automatically be placed in the open quota in the order in which they enrol.'
+          t('editor.quotas.openQuota.info')
         }
       />
       {useOpenQuota && (
         <FieldRow
           name="openQuotaSize"
-          label="The size of the open quota"
+          label={t('editor.quotas.openQuotaSize')}
           type="number"
           min="0"
           required

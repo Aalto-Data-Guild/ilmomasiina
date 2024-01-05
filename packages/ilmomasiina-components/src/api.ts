@@ -1,3 +1,5 @@
+import { ErrorCode } from '@tietokilta/ilmomasiina-models';
+
 export interface FetchOptions {
   method?: 'GET' | 'POST' | 'PUT' | 'PATCH' | 'DELETE';
   body?: any;
@@ -8,15 +10,15 @@ export interface FetchOptions {
 
 export class ApiError extends Error {
   status: number;
-  className?: string;
-  data?: any;
+  code?: ErrorCode;
+  response?: any;
 
-  constructor(status: number, data: any) {
-    super(data.message);
+  constructor(status: number, response: any) {
+    super(response.message);
     this.status = status;
     this.name = 'ApiError';
-    this.className = data.className;
-    this.data = data.data;
+    this.code = response.code;
+    this.response = response;
   }
 
   static async fromResponse(response: Response) {
@@ -30,10 +32,6 @@ export class ApiError extends Error {
       /* fall through */
     }
     return error;
-  }
-
-  get isUnauthenticated() {
-    return this.status === 401;
   }
 }
 

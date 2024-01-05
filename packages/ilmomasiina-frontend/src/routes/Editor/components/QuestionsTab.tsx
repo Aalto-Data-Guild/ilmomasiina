@@ -2,6 +2,7 @@ import React from 'react';
 
 import { useFormikContext } from 'formik';
 import { Form } from 'react-bootstrap';
+import { useTranslation } from 'react-i18next';
 
 import { FieldRow } from '@tietokilta/ilmomasiina-components';
 import { EditorEvent } from '../../../modules/editor/types';
@@ -9,34 +10,33 @@ import Questions from './Questions';
 
 const QuestionsTab = () => {
   const { values: { nameQuestion, emailQuestion } } = useFormikContext<EditorEvent>();
+  const { t } = useTranslation();
   return (
     <div>
       <FieldRow
         name="nameQuestion"
-        label="Name"
+        label={t('editor.questions.nameQuestion')}
         as={Form.Check}
         type="checkbox"
         checkAlign
-        checkLabel="Collect the names"
+        checkLabel={t('editor.questions.nameQuestion.check')}
         help={
           nameQuestion
-            ? 'The name is a mandatory question. The participant may decide whether the name is publicly visible.'
-            : 'If the name is asked, the participant may decide whether the name is publicly visible.'
+            ? t('editor.questions.nameQuestion.infoOn')
+            : t('editor.questions.nameQuestion.infoOff')
         }
       />
       <FieldRow
         name="emailQuestion"
-        label="Email"
+        label={t('editor.questions.emailQuestion')}
         as={Form.Check}
         type="checkbox"
         checkAlign
-        checkLabel="Collect email addresses"
+        checkLabel={t('editor.questions.emailQuestion.check')}
         help={
           emailQuestion
-            ? 'Email address is a required question. Participants will be sent a confirmation' +
-            ' e-mail and an e-mail notification about getting a place from the queue.'
-            : 'If the email address is not asked, participants will not receive confirmation' +
-            ' email or email notification about getting a place from the queue.'
+            ? t('editor.questions.emailQuestion.infoOn')
+            : t('editor.questions.emailQuestion.infoOff')
         }
       />
       <Questions />

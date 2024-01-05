@@ -1,6 +1,7 @@
 import React from 'react';
 
 import { Button, Modal } from 'react-bootstrap';
+import { useTranslation } from 'react-i18next';
 
 import { moveToQueueCanceled } from '../../../modules/editor/actions';
 import { useTypedDispatch, useTypedSelector } from '../../../store/reducers';
@@ -12,6 +13,7 @@ type Props = {
 const MoveToQueueWarning = ({ onProceed }: Props) => {
   const dispatch = useTypedDispatch();
   const modal = useTypedSelector((state) => state.editor.moveToQueueModal);
+  const { t } = useTranslation();
 
   return (
     <Modal
@@ -19,21 +21,19 @@ const MoveToQueueWarning = ({ onProceed }: Props) => {
       onHide={() => dispatch(moveToQueueCanceled())}
     >
       <Modal.Header>
-        <Modal.Title>Do you move sign-ups to the queue?</Modal.Title>
+        <Modal.Title>{t('editor.moveToQueue.title')}</Modal.Title>
       </Modal.Header>
       <Modal.Body>
-        <p>
-          {'The changes you make to the quotas will move at least '}
-          {modal?.count || '?'}
-          {' sign-ups that have already reached the quota to the queue. Users are not notified of this automatically.'}
-        </p>
-        <p>
-          Are you sure you want to continue?
-        </p>
+        <p>{t('editor.moveToQueue.info1', { number: modal?.count || '?' })}</p>
+        <p>{t('editor.moveToQueue.info2')}</p>
       </Modal.Body>
       <Modal.Footer>
-        <Button variant="muted" onClick={() => dispatch(moveToQueueCanceled())}>Cancel</Button>
-        <Button variant="danger" onClick={onProceed}>Continue</Button>
+        <Button variant="muted" onClick={() => dispatch(moveToQueueCanceled())}>
+          {t('editor.moveToQueue.action.cancel')}
+        </Button>
+        <Button variant="danger" onClick={onProceed}>
+          {t('editor.moveToQueue.action.proceed')}
+        </Button>
       </Modal.Footer>
     </Modal>
   );

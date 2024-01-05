@@ -2,6 +2,7 @@ import React from 'react';
 
 import { Field, Formik, FormikHelpers } from 'formik';
 import { Button, Form } from 'react-bootstrap';
+import { useTranslation } from 'react-i18next';
 
 import { login } from '../../modules/auth/actions';
 import { useTypedDispatch, useTypedSelector } from '../../store/reducers';
@@ -16,6 +17,7 @@ type FormData = {
 const Login = () => {
   const dispatch = useTypedDispatch();
   const { loginError } = useTypedSelector((state) => state.auth);
+  const { t } = useTranslation();
 
   async function onSubmit(data: FormData, { setSubmitting }: FormikHelpers<FormData>) {
     const { email, password } = data;
@@ -25,9 +27,9 @@ const Login = () => {
 
   return (
     <div className="login-container">
-      <h1>Log in</h1>
+      <h1>{t('login.title')}</h1>
       {loginError && (
-        <p className="text-invalid">Login failed</p>
+        <p className="text-invalid">{t('login.loginFailed')}</p>
       )}
       <Formik
         initialValues={{
@@ -39,7 +41,7 @@ const Login = () => {
         {({ handleSubmit, isSubmitting, errors }) => (
           <Form onSubmit={handleSubmit} className="ilmo--form">
             <Form.Group controlId="email">
-              <Form.Label data-required>E-mail</Form.Label>
+              <Form.Label data-required>{t('login.email')}</Form.Label>
               <Field
                 name="email"
                 as={Form.Control}
@@ -48,12 +50,9 @@ const Login = () => {
                 placeholder="admin@dataguild.fi"
                 isInvalid={errors.email}
               />
-              <Form.Control.Feedback type="invalid">
-                {errors.email && 'This field is required'}
-              </Form.Control.Feedback>
             </Form.Group>
             <Form.Group controlId="password">
-              <Form.Label data-required>Password</Form.Label>
+              <Form.Label data-required>{t('login.password')}</Form.Label>
               <Field
                 name="password"
                 as={Form.Control}
@@ -62,12 +61,9 @@ const Login = () => {
                 placeholder="••••••••"
                 isInvalid={errors.password}
               />
-              <Form.Control.Feedback type="invalid">
-                {errors.password && 'This field is required'}
-              </Form.Control.Feedback>
             </Form.Group>
             <Button type="submit" variant="secondary" disabled={isSubmitting}>
-              Sign in
+              {t('login.submit')}
             </Button>
           </Form>
         )}

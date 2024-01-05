@@ -1,6 +1,7 @@
 import { ApiError } from '@tietokilta/ilmomasiina-components';
-import type {
-  AdminEventResponse, CategoriesResponse, CheckSlugResponse, EditConflictError, EventID, EventUpdateBody, SignupID,
+import {
+  AdminEventResponse, CategoriesResponse, CheckSlugResponse, EditConflictError, ErrorCode, EventID, EventUpdateBody,
+  SignupID,
 } from '@tietokilta/ilmomasiina-models';
 import adminApiFetch from '../../api';
 import type { DispatchAction, GetState } from '../../store/types';
@@ -274,12 +275,12 @@ export const publishEventUpdate = (
     dispatch(loaded(response));
     return response;
   } catch (e) {
-    if (e instanceof ApiError && e.className === 'would-move-signups-to-queue') {
-      dispatch(moveToQueueWarning(e.data!.count));
+    if (e instanceof ApiError && e.code === ErrorCode.WOULD_MOVE_SIGNUPS_TO_QUEUE) {
+      dispatch(moveToQueueWarning(e.response!.count));
       return null;
     }
-    if (e instanceof ApiError && e.className === 'edit-conflict') {
-      dispatch(editConflictDetected(e.data!));
+    if (e instanceof ApiError && e.code === ErrorCode.EDIT_CONFLICT) {
+      dispatch(editConflictDetected(e.response!));
       return null;
     }
     dispatch(saveFailed());

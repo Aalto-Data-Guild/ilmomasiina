@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react';
 import { useFormikContext } from 'formik';
 import moment from 'moment-timezone';
 import { Button, Modal } from 'react-bootstrap';
+import { Trans, useTranslation } from 'react-i18next';
 
 import { editConflictDismissed, reloadEvent } from '../../../modules/editor/actions';
 import { EditorEvent } from '../../../modules/editor/types';
@@ -11,6 +12,7 @@ import { useTypedDispatch, useTypedSelector } from '../../../store/reducers';
 const EditConflictModal = () => {
   const dispatch = useTypedDispatch();
   const modal = useTypedSelector((state) => state.editor.editConflictModal);
+  const { t } = useTranslation();
 
   const deletedQuestions = modal?.deletedQuestions || [];
   const deletedQuotas = modal?.deletedQuotas || [];
@@ -71,25 +73,34 @@ const EditConflictModal = () => {
       backdrop="static"
     >
       <Modal.Header>
-        <Modal.Title>Overlapping editing</Modal.Title>
+        <Modal.Title>{t('editor.editConflict.title')}</Modal.Title>
       </Modal.Header>
       <Modal.Body>
         <p>
-          This event has been edited by another user or tab
-          {' '}
-          <strong>
-            {modal && moment(modal.updatedAt)
-              .tz(TIMEZONE)
-              .format('DD.MM.YYYY HH:mm:ss')}
-          </strong>
-          {deletedQuotas.length || deletedQuestions.length ? ' and removed the following quotas or questions:' : '.'}
+          <Trans
+            t={t}
+            i18nKey={
+              deletedQuotas.length || deletedQuestions.length
+                ? 'editor.editConflict.info1.withDeleted'
+                : 'editor.editConflict.info1'
+            }
+          >
+            {'Another user or tab has edited this event at '}
+            <strong>
+              {{ time: modal && moment(modal.updatedAt).tz(TIMEZONE).format('DD.MM.YYYY HH:mm:ss') }}
+            </strong>
+            .
+          </Trans>
         </p>
         <ul>
           {questions
             .filter((question) => question.id && deletedQuestions.includes(question.id))
             .map((question) => (
               <li key={question.key}>
-                <strong>Question: </strong>
+                <strong>
+                  {t('editor.editConflict.question')}
+                </strong>
+                {' '}
                 {question.question}
               </li>
             ))}
@@ -97,20 +108,28 @@ const EditConflictModal = () => {
             .filter((quota) => quota.id && deletedQuotas.includes(quota.id))
             .map((quota) => (
               <li key={quota.key}>
-                <strong>Quota: </strong>
+                <strong>
+                  {t('editor.editConflict.quota')}
+                </strong>
+                {' '}
                 {quota.title}
               </li>
             ))}
         </ul>
         <p>
-          You can save the event and overwrite the changes of the other user, or discard your changes
-          and continue from the event edited by the other user.
+          {t('editor.editConflict.info2')}
         </p>
       </Modal.Body>
       <Modal.Footer>
-        <Button variant="muted" onClick={() => dispatch(editConflictDismissed())}>Peruuta</Button>
-        <Button variant="secondary" onClick={revert}>Discard changes</Button>
-        <Button variant="warning" onClick={overwrite}>Overwrite</Button>
+        <Button variant="muted" onClick={() => dispatch(editConflictDismissed())}>
+          {t('editor.editConflict.action.cancel')}
+        </Button>
+        <Button variant="secondary" onClick={revert}>
+          {t('editor.editConflict.action.revert')}
+        </Button>
+        <Button variant="warning" onClick={overwrite}>
+          {t('editor.editConflict.action.overwrite')}
+        </Button>
       </Modal.Footer>
     </Modal>
   );

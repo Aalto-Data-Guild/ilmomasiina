@@ -2,6 +2,7 @@ import React, { useEffect, useRef } from 'react';
 
 import { useFormikContext } from 'formik';
 import { Form } from 'react-bootstrap';
+import { useTranslation } from 'react-i18next';
 import { shallowEqual } from 'react-redux';
 
 import { FieldRow } from '@tietokilta/ilmomasiina-components';
@@ -31,6 +32,8 @@ const BasicDetailsTab = () => {
     setFieldValue,
   } = useFormikContext<EditorEvent>();
 
+  const { t } = useTranslation();
+
   useEffect(() => {
     if (isNew && !slugTouched && title !== undefined) {
       const generatedSlug = title
@@ -59,15 +62,16 @@ const BasicDetailsTab = () => {
 
   let slugFeedback = null;
   if (slugAvailability === 'checking') {
-    slugFeedback = <Form.Text>Checking availability&hellip;</Form.Text>;
+    slugFeedback = (
+      <Form.Text>{t('editor.basic.url.checking')}</Form.Text>
+    );
   } else if (slugAvailability !== null) {
     if (slugAvailability.id === null || slugAvailability.id === event?.id) {
-      slugFeedback = <Form.Text className="text-success">URL is free!</Form.Text>;
+      slugFeedback = <Form.Text className="text-success">{t('editor.basic.url.free')}</Form.Text>;
     } else {
       slugFeedback = (
         <Form.Text className="text-danger">
-          {'URL is already in use by an event '}
-          {slugAvailability.title}
+          {t('editor.basic.url.reserved', { event: slugAvailability.title })}
         </Form.Text>
       );
     }
@@ -77,84 +81,81 @@ const BasicDetailsTab = () => {
     <div>
       <FieldRow
         name="title"
-        label="Name of the event"
+        label={t('editor.basic.name')}
         required
-        alternateError="* Title is required."
+        alternateError={t('editor.basic.name.missing')}
       />
       <FieldRow
         name="slug"
-        label="Event url"
+        label={t('editor.basic.url')}
         required
-        alternateError="* URL extension is required."
+        alternateError={t('editor.basic.url.missing')}
         extraFeedback={slugFeedback}
         as={SlugField}
       />
       <FieldRow
         name="listed"
-        label="Publicity"
+        label={t('editor.basic.listed')}
         as={Form.Check}
         type="checkbox"
         checkAlign
-        checkLabel="Show on the event list"
-        help={
-          'Hidden events can only be accessed by URL. Events saved ' +
-          'as a draft cannot be viewed as a user regardless of this setting.'
-        }
+        checkLabel={t('editor.basic.listed.check')}
+        help={t('editor.basic.listed.info')}
       />
       <FieldRow
         name="eventType"
-        label="Event Type"
+        label={t('editor.basic.type')}
         as={SelectBox}
         options={[
-          [EditorEventType.ONLY_EVENT, 'An event without registration'],
-          [EditorEventType.EVENT_WITH_SIGNUP, 'Event and registration'],
-          [EditorEventType.ONLY_SIGNUP, 'Registration without an event'],
+          [EditorEventType.ONLY_EVENT, t('editor.basic.type.onlyEvent')],
+          [EditorEventType.EVENT_WITH_SIGNUP, t('editor.basic.type.eventWithSignup')],
+          [EditorEventType.ONLY_SIGNUP, t('editor.basic.type.onlySignup')],
         ]}
       />
       {eventType !== EditorEventType.ONLY_SIGNUP && (
         <FieldRow
           name="date"
-          label="Start date"
+          label={t('editor.basic.startDate')}
           as={DateTimePicker}
           selectsStart
           endDate={endDate}
           required
-          alternateError="* The start date is required."
+          alternateError={t('editor.basic.startDate.missing')}
         />
       )}
       {eventType !== EditorEventType.ONLY_SIGNUP && (
         <FieldRow
           name="endDate"
-          label="End Date"
+          label={t('editor.basic.endDate')}
           as={DateTimePicker}
           selectsEnd
           startDate={date}
-          help="An event will only appear in the calendar export if an end time has been set for it."
+          help={t('editor.basic.endDate.info')}
         />
       )}
       <FieldRow
         name="category"
-        label="Category"
+        label={t('editor.basic.category')}
         as={Autocomplete}
         options={allCategories || []}
         busy={allCategories === null}
       />
       <FieldRow
         name="webpageUrl"
-        label="Website"
+        label={t('editor.basic.homePage')}
       />
       <FieldRow
         name="facebookUrl"
-        label="Facebook event"
+        label={t('editor.basic.facebook')}
       />
       <FieldRow
         name="location"
-        label="Location"
+        label={t('editor.basic.location')}
       />
       <FieldRow
         name="description"
-        label="Description"
-        help="Markdown can be used in the description."
+        label={t('editor.basic.description')}
+        help={t('editor.basic.description.info')}
         as={Textarea}
         rows={8}
       />
