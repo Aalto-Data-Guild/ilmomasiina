@@ -20,7 +20,7 @@
         "editSignup.fields.firstName.placeholder": "First name",
         "editSignup.fields.lastName": "Last name",
         "editSignup.fields.lastName.placeholder": "Last name",
-        "editSignup.namePublic": "Show name in public signup list",
+        "editSignup.namePublic": "Show name in public signup list (recommended)",
         "editSignup.position.openQuota": "You are in the open quota in position {{position}}.",
         "editSignup.position.queue": "You are in the queue in position {{position}}.",
         "editSignup.position.quota": "You are in quota {{quota}} in position {{position}}.",
