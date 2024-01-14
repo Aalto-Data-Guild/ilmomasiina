@@ -7,7 +7,7 @@ import * as en from './locales/en.json';
 import * as fi from './locales/fi.json';
 
 const resources = {
-  fi,
+  // fi,
   en,
 };
 
@@ -16,7 +16,7 @@ i18n
   .use(initReactI18next)
   .init({
     resources,
-    fallbackLng: 'fi',
+    fallbackLng: 'en',
     supportedLngs: Object.keys(resources),
     returnNull: false,
     interpolation: {

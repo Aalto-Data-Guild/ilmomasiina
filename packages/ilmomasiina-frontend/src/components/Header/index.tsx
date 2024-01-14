@@ -23,9 +23,9 @@ const Header = () => {
         <Link to={appPaths.eventsList} className="navbar-brand mr-auto">
           {branding.headerTitle}
         </Link>
-        {language !== 'fi' && (
-          <Button onClick={() => i18n.changeLanguage('fi')}>{t('header.switchLanguage', { lng: 'fi' })}</Button>
-        )}
+        {/*{language !== 'fi' && (*/}
+        {/*  <Button onClick={() => i18n.changeLanguage('fi')}>{t('header.switchLanguage', { lng: 'fi' })}</Button>*/}
+        {/*)}*/}
         {language !== 'en' && (
           <Button onClick={() => i18n.changeLanguage('en')}>{t('header.switchLanguage', { lng: 'en' })}</Button>
         )}

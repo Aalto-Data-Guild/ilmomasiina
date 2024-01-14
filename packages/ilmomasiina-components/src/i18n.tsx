@@ -7,7 +7,7 @@ import * as en from './locales/en.json';
 import * as fi from './locales/fi.json';
 
 const resources = {
-  fi,
+  // fi,
   en,
 };
 
@@ -15,7 +15,7 @@ export { resources as i18nResources };
 
 const i18n = createInstance({
   resources,
-  fallbackLng: 'fi',
+  fallbackLng: 'en',
   returnNull: false,
   interpolation: {
     // for React
