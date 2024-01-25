@@ -14,6 +14,8 @@ import QuotaStatus from './components/QuotaStatus';
 import SignupCountdown from './components/SignupCountdown';
 import SignupList from './components/SignupList';
 
+import icon from './dataguild_logo_vector.svg'
+
 const SingleEventView = () => {
   const {
     event, signupsByQuota, pending, error,
@@ -72,11 +74,30 @@ const SingleEventView = () => {
 const SingleEvent = () => {
   const { slug } = useParams<SingleEventProps>();
   return (
-    <SingleEventProvider slug={slug}>
-      <I18nProvider>
-        <SingleEventView />
-      </I18nProvider>
-    </SingleEventProvider>
+    <>
+      {slug === 'test' ?
+        <div>
+          <SingleEventProvider slug={slug}>
+            <I18nProvider>
+              <SingleEventView />
+            </I18nProvider>
+          </SingleEventProvider>
+          <style>{`
+            body {
+              background-image: url("//public/dataguild_logo_vector.svg");
+              background-color: #cccccc;
+              background-size: cover;
+            }
+            `}</style>
+        </div>
+        :
+        <SingleEventProvider slug={slug}>
+          <I18nProvider>
+            <SingleEventView />
+          </I18nProvider>
+        </SingleEventProvider>
+    }
+  </>
   );
 };
 
