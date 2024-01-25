@@ -12,9 +12,7 @@ import {
 import EventDescription from './components/EventDescription';
 import QuotaStatus from './components/QuotaStatus';
 import SignupCountdown from './components/SignupCountdown';
-import SignupList from './components/SignupList';
-
-import icon from './dataguild_logo_vector.svg'
+import SignupList from './components/SignupList'
 
 const SingleEventView = () => {
   const {
