@@ -22,6 +22,22 @@
 @use "widgets";
 @use "~@tietokilta/ilmomasiina-components/src/styles/all";
 
+@font-face {
+  font-family: 'MedievalFancy';
+  src: url("https://www.dl.dropboxusercontent.com/scl/fi/6dg8kndox20hgwu1eif8u/HobbitonBrushhandHobbitonbrushNoweirddots.woff?rlkey=u10ndtvkuadts8kpu8heu7jst&raw=1") format("woff");
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+};
+
+@font-face {
+  font-family: 'MedievalReadable';
+  src: url("https://www.dl.dropboxusercontent.com/scl/fi/ldg9bv4n1ofc51vdxdt08/Millenigem-yLXd.ttf?rlkey=0rdb9bfiq3mjzke5l6od2sz2l&raw=1") format("truetype");
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
 // Global layout
 
 body,

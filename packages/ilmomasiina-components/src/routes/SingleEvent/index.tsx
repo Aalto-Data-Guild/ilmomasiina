@@ -88,6 +88,11 @@ const SingleEvent = () => {
                 background-image: url("https://i.ibb.co/58bwmJQ/papertexture2.png");
                 background-repeat: repeat;
                 background-color: #FFEDCF;
+                font-family: MedievalReadable;
+              }
+
+              h1 {
+                font-family: MedievalFancy;
               }
 
               .dg-logo {
@@ -99,8 +104,8 @@ const SingleEvent = () => {
                 border-radius: 0.5rem;
               `}
             </style>
-          </>)
-        : (
+          </>
+        ) : (
           <style>
             {`
             .dg-logo {
@@ -112,6 +117,5 @@ const SingleEvent = () => {
     </div>
   );
 };
-
 
 export default SingleEvent;
