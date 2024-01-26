@@ -87,6 +87,7 @@ const SingleEvent = () => {
               body {
                 background-image: url("https://i.ibb.co/58bwmJQ/papertexture2.png");
                 background-repeat: repeat;
+                background-color: #FFEDCF;
               }
 
               .dg-logo {
