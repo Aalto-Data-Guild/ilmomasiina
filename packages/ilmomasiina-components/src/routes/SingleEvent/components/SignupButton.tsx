@@ -57,10 +57,10 @@ const SignupButton = ({
 
   return (
     <div className="ilmo--side-widget">
-      <h3>{t('singleEvent.signupButtons.title')}</h3>
-      <p>
-        {statusText.shortLabel}
-        {total < COUNTDOWN_DURATION && !isOpen && !isClosed && (
+  <h3>{t('singleEvent.signupButtons.title')}</h3>
+  <p>
+    {statusText.shortLabel}
+    {total < COUNTDOWN_DURATION && !isOpen && !isClosed && (
           <span style={{ color: 'green' }}>
             {` (${seconds} s)`}
           </span>
@@ -68,15 +68,19 @@ const SignupButton = ({
       </p>
       {quotas.map((quota) => (
         <Button
+
           key={quota.id}
           type="button"
           variant="secondary"
           disabled={!isOpen || submitting}
           className="ilmo--signup-button"
           onClick={() => onClick(quota.id)}
+          style={{ backgroundColor: '#9e0e0e', border: 0 }}
+
         >
           {isOnly ? t('singleEvent.signupButton.singleQuota') : t('singleEvent.signupButton', { quota: quota.title })}
-        </Button>
+        </Button
+          >
       ))}
     </div>
   );
