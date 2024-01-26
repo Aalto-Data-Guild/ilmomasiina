@@ -12,7 +12,7 @@ import {
 import EventDescription from './components/EventDescription';
 import QuotaStatus from './components/QuotaStatus';
 import SignupCountdown from './components/SignupCountdown';
-import SignupList from './components/SignupList'
+import SignupList from './components/SignupList';
 
 const SingleEventView = () => {
   const {
@@ -72,31 +72,45 @@ const SingleEventView = () => {
 const SingleEvent = () => {
   const { slug } = useParams<SingleEventProps>();
   return (
-    <>
-      {slug === 'test' ?
-        <div>
-          <SingleEventProvider slug={slug}>
-            <I18nProvider>
-              <SingleEventView />
-            </I18nProvider>
-          </SingleEventProvider>
-          <style>{`
-            body {
-              background-image: url("//public/dataguild_logo_vector.svg");
-              background-color: #cccccc;
-              background-size: cover;
-            }
-            `}</style>
-        </div>
-        :
-        <SingleEventProvider slug={slug}>
-          <I18nProvider>
-            <SingleEventView />
-          </I18nProvider>
-        </SingleEventProvider>
-    }
-  </>
+    <div>
+      <SingleEventProvider slug={slug}>
+        <I18nProvider>
+          <SingleEventView />
+        </I18nProvider>
+      </SingleEventProvider>
+      {slug === 'epoch'
+        ? (
+          <>
+            <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=MedievalSharp" />
+            <style>
+              {`
+              body {
+                background-image: url("https://i.ibb.co/58bwmJQ/papertexture2.png");
+                background-repeat: repeat;
+              }
+
+              .dg-logo {
+                display: block !important;
+              }
+
+              .ilmo--side-widget {
+                background-color: #e8d6ac;
+                border-radius: 0.5rem;
+              `}
+            </style>
+          </>)
+        : (
+          <style>
+            {`
+            .dg-logo {
+              display: none;
+             }
+            `}
+          </style>
+        )}
+    </div>
   );
 };
+
 
 export default SingleEvent;

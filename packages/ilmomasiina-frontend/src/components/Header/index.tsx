@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Button, Container, Navbar } from 'react-bootstrap';
+import { Button, Container, Image, Navbar } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
 
@@ -20,6 +20,11 @@ const Header = () => {
   return (
     <Navbar>
       <Container>
+        <Image
+          style={{ height: '3rem' }}
+          src="https://i.ibb.co/PZf4chr/data-Guild-Stamp.png"
+          className="dg-logo"
+        />
         <Link to={appPaths.eventsList} className="navbar-brand mr-auto">
           {branding.headerTitle}
         </Link>
