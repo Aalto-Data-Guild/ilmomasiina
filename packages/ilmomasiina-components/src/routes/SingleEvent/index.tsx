@@ -110,6 +110,16 @@ const SingleEvent = () => {
                 border-top: black dotted 1px;
               }
 
+              .ilmo--signup-button {
+                background-color: #9e0e0e;
+                border: 0;
+              }
+
+              .ilmo--event-heading {
+                border-top: 1px solid #8B4513;
+                border-bottom: 1px solid #8B4513;
+              }
+
               .ilmo--side-widget {
                 background-color: #e8d6ac;
                 border-radius: 0.5rem;
@@ -117,13 +127,7 @@ const SingleEvent = () => {
             </style>
           </>
         ) : (
-          <style>
-            {`
-            .dg-logo {
-              display: none;
-             }
-            `}
-          </style>
+          <style />
         )}
     </div>
   );

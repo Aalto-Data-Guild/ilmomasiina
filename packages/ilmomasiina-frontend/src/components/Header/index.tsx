@@ -21,7 +21,7 @@ const Header = () => {
     <Navbar>
       <Container>
         <Image
-          style={{ height: '3rem' }}
+          style={{ height: '3rem', display: 'none' }}
           src="https://i.ibb.co/PZf4chr/data-Guild-Stamp.png"
           className="dg-logo"
         />
