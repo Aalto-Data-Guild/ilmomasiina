@@ -101,6 +101,15 @@ const SingleEvent = () => {
                 display: block !important;
               }
 
+              .table .thead-light th {
+                background-color: #e8d6ac !important;
+              }
+
+              footer {
+                background-color: #e8d6ac;
+                border-top: black dotted 1px;
+              }
+
               .ilmo--side-widget {
                 background-color: #e8d6ac;
                 border-radius: 0.5rem;
