@@ -89,6 +89,8 @@ const SingleEvent = () => {
                 background-repeat: repeat;
                 background-color: #FFEDCF;
                 font-family: MedievalReadable;
+                font-size: 1.2rem;
+                font-weight: 500;
               }
 
               h1 {
