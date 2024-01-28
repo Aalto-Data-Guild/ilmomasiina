@@ -10,7 +10,7 @@ import EditForm from './components/EditForm';
 import NarrowContainer from './components/NarrowContainer';
 
 const EditSignupView = () => {
-  const { error, pending } = useEditSignupContext();
+  const { error, pending, event } = useEditSignupContext();
   const { t } = useTranslation();
 
   if (error) {
@@ -30,7 +30,39 @@ const EditSignupView = () => {
     );
   }
 
-  return <EditForm />;
+  return (
+    <>
+      {event?.slug === 'epoch'
+        ? (
+          <>
+            <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=MedievalSharp" />
+            <style>
+              {`
+                body {
+                  background-image: url("https://i.ibb.co/58bwmJQ/papertexture2.png");
+                  background-repeat: repeat;
+                  background-color: #FFEDCF;
+                  font-family: MedievalReadable;
+                }
+
+                h1 {
+                  font-family: MedievalFancy;
+                }
+
+                .dg-logo {
+                  display: block !important;
+                }
+
+                .ilmo--side-widget {
+                  background-color: #e8d6ac;
+                  border-radius: 0.5rem;
+                `}
+            </style>
+          </>
+        ) : (<style />)}
+      <EditForm />
+    </>
+  );
 };
 
 const EditSignup = () => {
