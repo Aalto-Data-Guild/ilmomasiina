@@ -138,13 +138,7 @@ const EditForm = () => {
                   </Button>
                 )}
                 <Button type="submit" variant="primary" formNoValidate disabled={isSubmitting}>
-                  {event?.slug === 'epoch' ? 'Preserve this manuscript'
-                    : (
-                      // eslint-disable-next-line react/jsx-no-useless-fragment
-                      <>
-                        { isNew ? t('editSignup.action.save') : t('editSignup.action.edit')}
-                      </>
-                    )}
+                  { isNew ? t('editSignup.action.save') : t('editSignup.action.edit')}
                 </Button>
               </nav>
             )}
