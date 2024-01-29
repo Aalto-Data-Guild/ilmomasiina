@@ -138,7 +138,7 @@ const EditForm = () => {
                   </Button>
                 )}
                 <Button type="submit" variant="primary" formNoValidate disabled={isSubmitting}>
-                  {event?.slug === 'epoch' ? 'Preserve this manuscript'
+                  {event?.slug === 'epoch5' ? 'Preserve this manuscript'
                     : (
                       // eslint-disable-next-line react/jsx-no-useless-fragment
                       <>

@@ -32,7 +32,7 @@ const EditSignupView = () => {
 
   return (
     <>
-      {event?.slug === 'epoch'
+      {event?.slug === 'epoch5'
         ? (
           <>
             <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=MedievalSharp" />
