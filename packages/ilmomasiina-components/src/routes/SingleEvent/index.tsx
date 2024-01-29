@@ -78,7 +78,7 @@ const SingleEvent = () => {
           <SingleEventView />
         </I18nProvider>
       </SingleEventProvider>
-      {slug === 'epoch'
+      {slug === 'epoch5'
         ? (
           <>
             <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=MedievalSharp" />
