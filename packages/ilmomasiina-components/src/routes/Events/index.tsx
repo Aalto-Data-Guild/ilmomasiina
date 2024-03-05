@@ -1,15 +1,17 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 
 import { Spinner, Table } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
 
+import { ErrorCode } from '@tietokilta/ilmomasiina-models';
 import { timezone } from '../../config';
-import { linkComponent } from '../../config/router';
+import { linkComponent, Navigate } from '../../config/router';
 import { usePaths } from '../../contexts/paths';
 import { I18nProvider } from '../../i18n';
 import { EventListProps, EventListProvider, useEventListContext } from '../../modules/events';
+import { errorDesc, errorTitle } from '../../utils/errorMessage';
 import {
-  EventRow, eventsToRows, OPENQUOTA, QuotaRow, WAITLIST,
+  EventRow, eventsToRows, QuotaRow,
 } from '../../utils/eventListUtils';
 import { useSignupStateText } from '../../utils/signupStateText';
 import TableRow from './components/TableRow';
@@ -36,14 +38,14 @@ const ListEventRow = ({
 
 const ListQuotaRow = ({
   row: {
-    id, title, signupCount, quotaSize,
+    type, title, signupCount, quotaSize,
   },
 }: { row: QuotaRow }) => {
   const { t } = useTranslation();
   return (
     <TableRow
       className="ilmo--quota-row"
-      title={id === OPENQUOTA ? t('events.openQuota') : title}
+      title={type === 'openquota' ? t('events.openQuota') : title}
       signupCount={signupCount}
       quotaSize={quotaSize}
     />
@@ -53,12 +55,20 @@ const ListQuotaRow = ({
 const EventListView = () => {
   const { events, error, pending } = useEventListContext();
   const { t } = useTranslation();
+  const paths = usePaths();
+
+  const tableRows = useMemo(() => eventsToRows(events ?? []).filter((row) => row.type !== 'waitlist'), [events]);
+
+  // If initial setup is needed and is possible on this frontend, redirect to that page.
+  if (error && error.code === ErrorCode.INITIAL_SETUP_NEEDED && paths.hasAdmin) {
+    return <Navigate to={paths.adminInitialSetup} />;
+  }
 
   if (error) {
     return (
       <>
-        <h1>{t('errors.title')}</h1>
-        <p>{t('events.loadFailed')}</p>
+        <h1>{errorTitle(t, error, 'events.loadError')}</h1>
+        <p>{errorDesc(t, error, 'events.loadError')}</p>
       </>
     );
   }
@@ -72,12 +82,6 @@ const EventListView = () => {
     );
   }
 
-  const tableRows = eventsToRows(events!).map((row) => {
-    if (row.isEvent) return <ListEventRow key={row.id} row={row} />;
-    if (row.id !== WAITLIST) return <ListQuotaRow key={row.id} row={row} />;
-    return null;
-  });
-
   return (
     <>
       <h1>{t('events.title')}</h1>
@@ -90,7 +94,12 @@ const EventListView = () => {
             <th>{t('events.column.signupCount')}</th>
           </tr>
         </thead>
-        <tbody>{tableRows}</tbody>
+        <tbody>
+          {tableRows.map((row) => (row.type === 'event'
+            ? <ListEventRow key={row.id} row={row} />
+            : <ListQuotaRow key={row.id} row={row} />))}
+
+        </tbody>
       </Table>
     </>
   );

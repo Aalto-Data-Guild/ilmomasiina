@@ -35,4 +35,11 @@ export enum ErrorCode {
   EDIT_CONFLICT = 'EditConflict',
   WOULD_MOVE_SIGNUPS_TO_QUEUE = 'WouldMoveSignupsToQueue',
   WRONG_OLD_PASSWORD = 'WrongOldPassword',
+  SIGNUPS_CLOSED = 'SignupsClosed',
+  NO_SUCH_QUOTA = 'NoSuchQuota',
+  NO_SUCH_SIGNUP = 'NoSuchSignup',
+  BAD_EDIT_TOKEN = 'BadEditToken',
+  CANNOT_DELETE_SELF = 'CannotDeleteSelf',
+  INITIAL_SETUP_NEEDED = 'InitialSetupNeeded',
+  INITIAL_SETUP_ALREADY_DONE = 'InitialSetupAlreadyDone',
 }

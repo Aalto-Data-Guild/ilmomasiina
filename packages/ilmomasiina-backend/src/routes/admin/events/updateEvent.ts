@@ -6,6 +6,7 @@ import type {
   AdminEventPathParams, AdminEventResponse, EditConflictError, EventUpdateBody, WouldMoveSignupsToQueueError,
 } from '@tietokilta/ilmomasiina-models';
 import { AuditEvent } from '@tietokilta/ilmomasiina-models';
+import { getSequelize } from '../../../models';
 import { Event } from '../../../models/event';
 import { Question } from '../../../models/question';
 import { Quota } from '../../../models/quota';
@@ -18,7 +19,7 @@ export default async function updateEvent(
   request: FastifyRequest<{ Params: AdminEventPathParams, Body: EventUpdateBody }>,
   response: FastifyReply,
 ): Promise<AdminEventResponse | EditConflictError | WouldMoveSignupsToQueueError> {
-  await Event.sequelize!.transaction(async (transaction) => {
+  await getSequelize().transaction(async (transaction) => {
   // Get the event with all relevant information for the update
     const event = await Event.findByPk(request.params.id, {
       attributes: ['id', 'openQuotaSize', 'draft', 'updatedAt'],
@@ -106,16 +107,10 @@ export default async function updateEvent(
         };
         // Update if an id was provided
         if (question.existing) {
-          await question.existing.update({
-            ...questionAttribs,
-            // TODO: Splitting by semicolon might cause problems - requires better solution
-            options: questionAttribs.options ? questionAttribs.options.join(';') : null,
-          }, { transaction });
+          await question.existing.update(questionAttribs, { transaction });
         } else {
           await Question.create({
             ...questionAttribs,
-            // TODO: Splitting by semicolon might cause problems - requires better solution
-            options: questionAttribs.options ? questionAttribs.options.join(';') : null,
             eventId: event.id,
           }, { transaction });
         }

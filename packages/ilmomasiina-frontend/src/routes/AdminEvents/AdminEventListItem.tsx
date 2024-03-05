@@ -1,11 +1,13 @@
 import React, { MouseEvent } from 'react';
 
-import sumBy from 'lodash/sumBy';
+import sumBy from 'lodash-es/sumBy';
 import moment from 'moment-timezone';
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
 import { toast } from 'react-toastify';
 
+import { ApiError } from '@tietokilta/ilmomasiina-components';
+import { errorDesc } from '@tietokilta/ilmomasiina-components/dist/utils/errorMessage';
 import type { AdminEventListItem as AdminEventListItemSchema } from '@tietokilta/ilmomasiina-models';
 import { deleteEvent, getAdminEvents } from '../../modules/adminEvents/actions';
 import appPaths from '../../paths';
@@ -27,13 +29,16 @@ const AdminEventListItem = ({ event }: Props) => {
 
   async function onDelete(e: MouseEvent) {
     e.preventDefault();
+    // eslint-disable-next-line no-alert
     const confirmed = window.confirm(t('adminEvents.action.delete.confirm'));
     if (confirmed) {
-      const success = await dispatch(deleteEvent(id));
-      if (!success) {
-        toast.error(t('adminEvents.action.delete.failed'), { autoClose: 2000 });
+      try {
+        await dispatch(deleteEvent(id));
+      } catch (err) {
+        toast.error(errorDesc(t, err as ApiError, 'adminEvents.action.delete.error'), { autoClose: 2000 });
+      } finally {
+        dispatch(getAdminEvents());
       }
-      dispatch(getAdminEvents());
     }
   }
 

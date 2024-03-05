@@ -27,6 +27,7 @@ services:
         - BRANDING_FOOTER_GDPR_LINK=/index.php/official-documents/
         - BRANDING_FOOTER_HOME_TEXT=dataguild.fi
         - BRANDING_FOOTER_HOME_LINK=https://dataguild.fi
+        - BRANDING_LOGIN_PLACEHOLDER_EMAIL=first.last@dataguild.fi
     restart: always
     depends_on:
       - database
