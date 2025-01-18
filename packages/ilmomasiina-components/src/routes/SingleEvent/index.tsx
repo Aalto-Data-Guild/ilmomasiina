@@ -78,51 +78,101 @@ const SingleEvent = () => {
           <SingleEventView />
         </I18nProvider>
       </SingleEventProvider>
-      {slug === 'epoch5'
+      {slug === 'epoch6'
         ? (
           <>
-            <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=MedievalSharp" />
+            <link href="https://fonts.googleapis.com/css?family=Almendra:ital,wght@0,400;0,700;1,400;1,700&family=Josefin+Sans:ital,wght@0,100..700;1,100..700@display=swap" rel="stylesheet" />
             <style>
               {`
               body {
-                background-image: url("https://i.ibb.co/58bwmJQ/papertexture2.png");
-                background-repeat: repeat;
-                background-color: #FFEDCF;
-                font-family: MedievalReadable;
-                font-size: 1.2rem;
-                font-weight: 500;
+                background-color: var(--epoch6-background);
+                color: var(--epoch6-white);
               }
 
               h1 {
-                font-family: MedievalFancy;
+                font-family: Almendra, sans-serif;
               }
 
-              .dg-logo {
-                display: block !important;
+              h2 {
+                color: var(--epoch6-white);
+                font-family: Almendra, sans-serif;
+              }
+              
+              p {
+                font-family: "Josefin Sans", serif;
+                font-optical-sizing: auto;
+                font-style: normal;
+                color: #ffdcdc;
+              }
+              
+              .table {
+                color: var(--epoch-white);
               }
 
               .table .thead-light th {
-                background-color: #e8d6ac !important;
+                background-color: var(--epoch6-secondary) !important;
+                color: var(--epoch6-white);
+              }
+
+              .table th, .table td {
+                border-top: 1px solid #fefdfe8a;
+                border-bottom: 1px solid #fefdfe8a; 
               }
 
               footer {
-                background-color: #e8d6ac;
-                border-top: black dotted 1px;
+                background-color: var(--epoch6-background);
+                border-top: var(--epoch6-secondary) dotted 1px;
+              }
+
+              .navbar {
+                background-color: var(--epoch6-background);
+                box-shadow: inset 0rem -2rem 5rem #8a070a85;
+              }
+
+              a {
+                color: #ee383c;
               }
 
               .ilmo--signup-button {
-                background-color: #9e0e0e;
-                border: 0;
+                border-radius: 1rem;
+                border-width: 0;
+                box-shadow: inset 0rem 0rem 1.5rem var(--background-color);
+                background-color: var(--epoch6-secondary);
+                border: 2px solid #5a0f0f;
+                transition: all 0.3s ease;
+              }
+
+              .ilmo--signup-button:hover {
+                box-shadow: 0 0 1rem #884848, 0 0 0.2rem #8b3d3d;
+                transform: translateY(-0.2rem);
+                background-color: var(--epoch6-secondary);
+                 border: 2px solid #5a0f0f;
+              }
+
+              .ilmo--signup-button:active {
+                box-shadow: inset 0 0 1.5rem var(--white);
+                background-color: var(--epoch6-background);
+                transform: translateY(0.1rem);
               }
 
               .ilmo--event-heading {
-                border-top: 1px solid #8B4513;
-                border-bottom: 1px solid #8B4513;
+                border-top: 1px solid var(--epoch6-secondary);
+                border-bottom: 1px solid var(--epoch6-secondary);
               }
 
               .ilmo--side-widget {
-                background-color: #e8d6ac;
-                border-radius: 0.5rem;
+                background-color: var(--epoch6-background);
+                border-radius: 0.5rem;      
+              }
+                
+              .ilmo--signup-progress {
+                background-color: var(--epoch6-background);
+                border: 1px solid var(--epoch6-secondary);
+              }
+
+              .progress-bar {
+                background-color: var(--epoch6-secondary);
+              }
               `}
             </style>
           </>

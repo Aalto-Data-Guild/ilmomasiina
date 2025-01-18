@@ -72,7 +72,7 @@ const DeleteSignup = () => {
         confirmDelay={DELETE_CONFIRM_MS}
         confirmLabel={t('editSignup.delete.action.confirm')}
       >
-        {event?.slug === 'epoch5' ? 'Annul the enlistment' : t('editSignup.delete.action')}
+        {t('editSignup.delete.action')}
       </ConfirmButton>
     </div>
   );

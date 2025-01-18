@@ -32,37 +32,63 @@ const EditSignupView = () => {
 
   return (
     <>
-      {event?.slug === 'epoch5'
+      {event?.slug === 'epoch6'
         ? (
           <>
-            <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=MedievalSharp" />
+            <link href="https://fonts.googleapis.com/css?family=Almendra:ital,wght@0,400;0,700;1,400;1,700&family=Josefin+Sans:ital,wght@0,100..700;1,100..700@display=swap" rel="stylesheet" />
             <style>
               {`
                 body {
-                  background-image: url("https://i.ibb.co/58bwmJQ/papertexture2.png");
-                  background-repeat: repeat;
-                  background-color: #FFEDCF;
-                  font-family: MedievalReadable;
-                  font-size: 1.2rem;
-                  font-weight: 500;
-                }
+                background-color: var(--epoch6-background);
+                color: var(--epoch6-white);
+              }
 
-                h1 {
-                  font-family: MedievalFancy;
-                }
+              h1 {
+                font-family: Almendra;
+              }
+              
+              p {
+                font-family: "Josefin Sans", serif;
+                font-optical-sizing: auto;
+                font-style: normal;
+                color: #ffdcdc;
+              }
 
-                .dg-logo {
-                  display: block !important;
-                }
+              footer {
+                background-color: var(--epoch6-background);
+                border-top: var(--epoch6-secondary) dotted 1px;
+              }
 
-                footer {
-                  background-color: #e8d6ac;
-                  border-top: black dotted 1px;
-                }
+              .navbar {
+                background-color: var(--epoch6-background);
+                box-shadow: inset 0rem -2rem 5rem #8a070a85;
+              }
 
-                .ilmo--side-widget {
-                  background-color: #e8d6ac;
-                  border-radius: 0.5rem;
+              a {
+                color: #ee383c;
+              }
+
+              .bnt-primary {
+                border-radius: 1rem;
+                border-width: 0;
+                box-shadow: inset 0rem 0rem 1.5rem var(--background-color);
+                background-color: var(--epoch6-secondary);
+                border: 2px solid #5a0f0f;
+                transition: all 0.3s ease;
+              }
+
+              .btn-primary:hover {
+                box-shadow: 0 0 1rem #884848, 0 0 0.2rem #8b3d3d;
+                transform: translateY(-0.2rem);
+                background-color: var(--epoch6-secondary);
+                 border: 2px solid #5a0f0f;
+              }
+
+              .btn-primary:active {
+                box-shadow: inset 0 0 1.5rem var(--white);
+                background-color: var(--epoch6-background);
+                transform: translateY(0.1rem);
+              }
                 `}
             </style>
           </>
