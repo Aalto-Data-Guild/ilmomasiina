@@ -81,7 +81,6 @@ const SingleEvent = () => {
       {slug === 'epoch6'
         ? (
           <>
-            <link href="https://fonts.googleapis.com/css?family=Almendra:ital,wght@0,400;0,700;1,400;1,700&family=Josefin+Sans:ital,wght@0,100..700;1,100..700@display=swap" rel="stylesheet" />
             <style>
               {`
               body {
@@ -98,10 +97,11 @@ const SingleEvent = () => {
                 font-family: Almendra, sans-serif;
               }
               
-              p {
+              p, div {
                 font-family: "Josefin Sans", serif;
                 font-optical-sizing: auto;
                 font-style: normal;
+                font-size: 1.2rem;
                 color: #ffdcdc;
               }
               

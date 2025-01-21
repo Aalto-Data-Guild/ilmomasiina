@@ -35,7 +35,6 @@ const EditSignupView = () => {
       {event?.slug === 'epoch6'
         ? (
           <>
-            <link href="https://fonts.googleapis.com/css?family=Almendra:ital,wght@0,400;0,700;1,400;1,700&family=Josefin+Sans:ital,wght@0,100..700;1,100..700@display=swap" rel="stylesheet" />
             <style>
               {`
                 body {
@@ -47,11 +46,12 @@ const EditSignupView = () => {
                 font-family: Almendra;
               }
               
-              p {
+              p, div {
                 font-family: "Josefin Sans", serif;
                 font-optical-sizing: auto;
                 font-style: normal;
                 color: #ffdcdc;
+                font-size: 1.2rem;
               }
 
               footer {
