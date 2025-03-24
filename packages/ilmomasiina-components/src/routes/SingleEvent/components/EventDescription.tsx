@@ -96,7 +96,10 @@ const EventDescription = () => {
         )}
       </div>
       <div className="ilmo--event-description">
-        <ReactMarkdown remarkPlugins={[remarkGfm]}>
+        <ReactMarkdown remarkPlugins={[remarkGfm]}
+                       components={{
+                         img:({node,...props})=><img style={{maxWidth:'100%'}}{...props}/>}
+        }>
           {event.description || ''}
         </ReactMarkdown>
       </div>
