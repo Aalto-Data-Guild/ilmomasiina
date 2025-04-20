@@ -6,11 +6,24 @@
   border-right: 1px solid grey;
 }
 
+.event-editor--tab-error {
+  display: inline-block;
+  width: 16px;
+  height: 16px;
+  margin-left: 3px;
+  vertical-align: middle;
+  background-image: escape-svg($form-feedback-icon-invalid);
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-size: contain;
+}
+
 .sortable-item {
   flex-direction: row !important;
   margin-bottom: 1rem;
 
-  .quota-body, .question-body {
+  .quota-body,
+  .question-body {
     margin: 0;
     padding: 1.25rem;
     flex-grow: 1;
@@ -76,6 +89,12 @@
   row-gap: $spacer;
   margin-bottom: $spacer;
 
+  @if $force-link-underline {
+    :link {
+      text-decoration: underline;
+    }
+  }
+
   .spinner-border {
     align-self: center;
   }
@@ -104,4 +123,20 @@
 
 .event-editor--animated {
   transition: all 0.3s ease;
+}
+
+.event-editor--preview .ilmo--title-nav h1 {
+  margin-top: 0;
+}
+
+// Apply same widths as NarrowContainer, but to the dialog
+.event-editor--signup-dialog {
+  max-width: 100% * 8 / 12 !important;
+
+  @include media-breakpoint-down(sm) {
+    max-width: 100% * 10 / 12 !important;
+  }
+  @include media-breakpoint-down(xs) {
+    max-width: 100% !important;
+  }
 }

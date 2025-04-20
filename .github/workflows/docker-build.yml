@@ -2,32 +2,53 @@ name: Build & deploy
 
 env:
   # Change this to upload the built image to your own organization.
-  docker_tag: 'ghcr.io/tietokilta/ilmomasiina'
+  docker_tag: "ghcr.io/tietokilta/ilmomasiina"
 
   # Change these to customize your build.
-  branding_header_title_text: 'Tietokillan ilmomasiina'
-  branding_footer_gdpr_text: 'Tietosuoja'
-  branding_footer_gdpr_link: 'https://tietokilta.fi/kilta/hallinto/viralliset-asiat/rekisteriselosteet/'
-  branding_footer_home_text: 'Tietokilta.fi'
-  branding_footer_home_link: 'https://tietokilta.fi'
-  branding_login_placeholder_email: 'admin@tietokilta.fi'
+  branding_header_title_text: "Tietokillan ilmomasiina"
+  branding_header_title_text_short: "Ilmomasiina"
+  branding_footer_gdpr_text: "Tietosuoja"
+  branding_footer_gdpr_link: "https://tietokilta.fi/fi/kilta/ilmorekisteri"
+  branding_footer_home_text: "Tietokilta.fi"
+  branding_footer_home_link: "https://tietokilta.fi"
+  branding_login_placeholder_email: "admin@tietokilta.fi"
 
 on:
   push:
     branches:
-      - prod
-      - staging
+      - dev
     tags:
-      - 'v*'
+      - "v*"
 
 jobs:
   lint:
     name: Lint & type-check
-    uses: ./.github/workflows/lint.yml
+    uses: ./.github/workflows/lint-test.yml
+
+  packagejson:
+    name: Check package.json versions
+    runs-on: ubuntu-latest
+    if: github.ref_type == 'tag'
+    steps:
+      - name: Check out the repo
+        uses: actions/checkout@v4
+
+      - name: Check package.json versions against tag
+        run: |
+          errors=0
+          for file in package.json packages/*/package.json
+          do
+            if cat $file | jq '"v" + .version' | grep -Fqvx '"${{ github.ref_name }}"'
+            then
+              echo "::error file=$file::The version here does not match the Git tag you pushed (${{ github.ref_name }}). This would cause no NPM packages to be published."
+              errors=1
+            fi
+          done
+          exit $errors
 
   docker:
     name: Push Docker image to GitHub Packages
-    needs: lint
+    needs: [lint, packagejson]
     runs-on: ubuntu-latest
     permissions:
       packages: write
@@ -35,7 +56,6 @@ jobs:
     # Change this to your repo name to build automatically on your fork.
     if: github.repository == 'Tietokilta/ilmomasiina'
     steps:
-
       - name: Check out the repo
         uses: actions/checkout@v4
 
@@ -55,7 +75,7 @@ jobs:
         with:
           images: ${{ env.docker_tag }}
           flavor: |
-            latest=${{ github.ref == 'refs/heads/prod' }}
+            latest=${{ github.ref == 'refs/heads/dev' }}
           tags: |
             type=semver,pattern={{version}},enable=${{ github.ref_type == 'tag' }}
             type=semver,pattern={{major}}.{{minor}},enable=${{ github.ref_type == 'tag' }}
@@ -76,36 +96,38 @@ jobs:
           # Customize your build here
           build-args: |
             BRANDING_HEADER_TITLE_TEXT=${{ env.branding_header_title_text }}
+            BRANDING_HEADER_TITLE_TEXT_SHORT=${{ env.branding_header_title_text_short }}
             BRANDING_FOOTER_GDPR_TEXT=${{ env.branding_footer_gdpr_text }}
             BRANDING_FOOTER_GDPR_LINK=${{ env.branding_footer_gdpr_link }}
             BRANDING_FOOTER_HOME_TEXT=${{ env.branding_footer_home_text }}
             BRANDING_FOOTER_HOME_LINK=${{ env.branding_footer_home_link }}
             BRANDING_LOGIN_PLACEHOLDER_EMAIL=${{ env.branding_login_placeholder_email }}
             VERSION=${{steps.get-version.outputs.version}}
+    outputs:
+      tag: ${{ steps.meta.outputs.version }}
 
   # This is disabled on forks, you'll most likely need to modify it anyway for your usage
   deploy:
     name: Push update to App Service
     needs: docker
-    if: github.ref_type == 'branch' && github.repository == 'Tietokilta/ilmomasiina'
+    if: github.ref_type == 'tag' && github.repository == 'Tietokilta/ilmomasiina'
     runs-on: ubuntu-latest
     environment: production
     steps:
+      - name: Login via Azure CLI
+        uses: azure/login@v1
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
 
-    - name: Login via Azure CLI
-      uses: azure/login@v1
-      with:
-        creds: ${{ secrets.AZURE_CREDENTIALS }}
-
-    - uses: azure/webapps-deploy@v3
-      with:
-        app-name: tik-ilmo-${{ github.ref_name }}-app
-        images: '${{ env.docker_tag }}:${{ github.ref_name }}'
+      - uses: azure/webapps-deploy@v3
+        with:
+          app-name: tik-ilmo-prod-app
+          images: "${{ env.docker_tag }}:${{ needs.docker.outputs.tag }}"
 
   # This is disabled on forks since you probably don't need to upload your own packages
   npm:
     name: Publish JS packages
-    needs: lint
+    needs: [lint, packagejson]
     permissions:
       packages: write
       contents: read

@@ -1,12 +1,12 @@
 {
   "name": "ilmomasiina",
-  "version": "2.0.0-alpha13",
+  "version": "2.0.0-alpha40",
   "private": true,
   "license": "MIT",
   "engines": {
-    "node": "^16",
-    "npm": "^7"
+    "node": "^20"
   },
+  "packageManager": "pnpm@9.1.1",
   "scripts": {
     "bootstrap": "pnpm install",
     "clean": "pnpm run -r clean",
@@ -14,8 +14,10 @@
     "start": "pnpm run -r --parallel start",
     "lint": "eslint packages",
     "lint:fix": "npm run lint -- --fix",
+    "format": "prettier -w packages/*/{src,test}/**/*.{ts,tsx,scss}",
     "typecheck": "pnpm run -r --workspace-concurrency=1 typecheck",
-    "test": "pnpm run -r test"
+    "test": "pnpm run -r test",
+    "test:backend": "pnpm run --filter ilmomasiina-backend test"
   },
   "repository": {
     "type": "git",
@@ -30,6 +32,7 @@
     "eslint": "^8.56.0",
     "eslint-config-airbnb": "^19.0.4",
     "eslint-config-airbnb-typescript": "^17.1.0",
+    "eslint-config-prettier": "^9.1.0",
     "eslint-plugin-import": "^2.29.1",
     "eslint-plugin-jest": "^27.9.0",
     "eslint-plugin-jsx-a11y": "^6.8.0",
@@ -37,7 +40,7 @@
     "eslint-plugin-react": "^7.33.2",
     "eslint-plugin-react-hooks": "^4.6.0",
     "eslint-plugin-simple-import-sort": "^12.0.0",
-    "pnpm": "^8.15.3",
+    "prettier": "^3.3.3",
     "typescript": "~5.2.2"
   },
   "browserslist": {

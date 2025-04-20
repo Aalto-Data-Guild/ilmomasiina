@@ -10,10 +10,10 @@ build your own Docker image (if using Docker):
 
 - Hosting in a subfolder (instead of directly at `https://ilmo.your.domain/`)
 - Colors ([`packages/ilmomasiina-components/src/styles/_definitions.scss`](../packages/ilmomasiina-components/src/styles/_definitions.scss))
-- Header logo (TBD)
-- Header title (build args or [`packages/ilmomasiina-frontend/src/branding.ts`](../packages/ilmomasiina-frontend/src/branding.ts))
-- Footer links (as above)
+- Header logo (`packages/ilmomasiina-frontend/src/assets/logo.svg`) (can also be disabled from `_definitions.scss`)
 - Favicon (`packages/ilmomasiina-frontend/public/*.png`)
+- Header title (build args or [`packages/ilmomasiina-frontend/src/branding.ts`](../packages/ilmomasiina-frontend/src/branding.ts))
+- Footer links (build args or [`packages/ilmomasiina-frontend/src/branding.ts`](../packages/ilmomasiina-frontend/src/branding.ts))
 - Translations (`packages/ilmomasiina-*/src/locales/*.json`)
 
 You can of course make further UI changes, but that is not documented.
@@ -52,7 +52,8 @@ You can of course also build images locally.
 
 ```
 docker build \
-  --build-arg BRANDING_HEADER_TITLE_TEXT='Ilmomasiina' \
+  --build-arg BRANDING_HEADER_TITLE_TEXT='Kilta ry ilmomasiina' \
+  --build-arg BRANDING_HEADER_TITLE_TEXT_SHORT='Ilmomasiina' \
   --build-arg BRANDING_FOOTER_GDPR_TEXT='Tietosuoja' \
   --build-arg BRANDING_FOOTER_GDPR_LINK='https://example.com' \
   --build-arg BRANDING_FOOTER_HOME_TEXT='Kotisivu' \
@@ -114,6 +115,8 @@ Especially for development, running PostgreSQL with Docker may be the easiest op
 3. If you have the PostgreSQL client installed, try signing in: `psql -h localhost -U ilmo_user ilmomasiina`
 
 #### Ubuntu/Debian MariaDB installation
+
+**NOTE:** MySQL will not be supported by Ilmomasiina 3.0.
 
 If you intend to run your own database, you can follow these instructions to install one on a Ubuntu or Debian system.
 
@@ -411,3 +414,18 @@ pre-configured PostgreSQL server, so an external database server is not required
 
 Due to how the dev Docker is set up, you will still need to rebuild the development image if you change the
 dependencies, package.json or ESLint configs. You'll also need Node.js and pnpm installed locally to do that.
+
+### Test database setup
+
+To run tests, you'll likely want another test database so test data doesn't clutter your manual development database.
+
+1. Follow the same steps as in [the usual database setup](#database-setup), but name the database something different. This example uses `ilmo_test`.
+2. Create a `.env.test` file at the root of this repository. Assuming your test database runs on the same MySQL/Postgres server, just put this in:
+    ```shell
+    DB_DATABASE=ilmo_test
+    THIS_IS_A_TEST_DB_AND_CAN_BE_WIPED=1
+    ```
+    - The latter line is required to avoid accidental loss of data, because the test suite truncates all database
+      tables whenever you run `npm test`. **Make absolutely sure you're not using an important database for testing.**
+      You most likely want to move your regular database configs to `.env.development` or `.env.production`, and copy
+      the necessary bits over to `.env.test`.
